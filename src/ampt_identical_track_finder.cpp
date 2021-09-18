@@ -7,6 +7,7 @@
 
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 
@@ -22,25 +23,32 @@ using namespace std;
 
 
 void find_identical_tracks() {
-	vector<int> ignore_pids{ 111, 313, -313 };
-	string in_path = "/home/dylan/Research/AMPT_Trees/min_bias/default/";
-	vector<string> dirs = get_files_in_dir(in_path, "", "path", true);
-	vector<string> file_paths;
-	for (string dir : dirs) {
-		dir += "/";
-		vector<string> new_paths = get_files_in_dir(dir, "root", "path");
-		file_paths.insert(file_paths.end(), new_paths.begin(), new_paths.end());
-		cout << dir << " : " << new_paths.size() << " files " << endl;
-	}
+	string path_to_paths_file = "/home/dylan/Research/Ampt_Bad_Events/root_paths.txt";
+	string out_file_path = "/home/dylan/Research/Ampt_Bad_Events/bad_files.txt";
+	vector<int> ignore_pids{ 111, 313 };
 	double max_eta = 1.0;
-
 	ampt_tree_branches branches;
+
+	//string in_path = "/home/dylan/Research/AMPT_Trees/min_bias/default/";
+	//vector<string> dirs = get_files_in_dir(in_path, "", "path", true);
+	//vector<string> file_paths;
+	//for (string dir : dirs) {
+	//	dir += "/";
+	//	vector<string> new_paths = get_files_in_dir(dir, "root", "path");
+	//	file_paths.insert(file_paths.end(), new_paths.begin(), new_paths.end());
+	//	cout << dir << " : " << new_paths.size() << " files " << endl;
+	//}
+
 //	vector<string> file_paths = get_files_in_dir(in_path, "root", "path");
 
-	int files = (int)file_paths.size();
+	ifstream paths_file(path_to_paths_file);
+	string file_path;
 	int file_index = 0;
-	for (string root_path : file_paths) {
-//		cout << "File " << ++file_index << " of " << files << ": " << root_path << endl;
+
+	ofstream out_file(out_file_path);
+
+	while (getline(paths_file, file_path)) {
+		cout << "File " << ++file_index << ": " << root_path << endl;
 		TFile f(root_path.data(), "READ");
 		TTree *tree = (TTree*)f.Get("tree");
 		set_ampt_tree_branches(tree, branches);
@@ -51,7 +59,7 @@ void find_identical_tracks() {
 		while (tree->GetEvent(event_index++)) {
 			int tracks = (int)branches.pid->size();
 			for (int track_index_i = 0; track_index_i < tracks - 1; track_index_i++) {
-				if (find(ignore_pids.begin(), ignore_pids.end(), (int)branches.pid->at(track_index_i)) != ignore_pids.end()) {
+				if (find(ignore_pids.begin(), ignore_pids.end(), fabs((int)branches.pid->at(track_index_i))) != ignore_pids.end()) {
 					continue;
 				}
 				TVector3 vec_i(branches.px->at(track_index_i), branches.py->at(track_index_i), branches.pz->at(track_index_i));
@@ -71,13 +79,16 @@ void find_identical_tracks() {
 				}
 			}
 			if (duplicate_count > 0) {
-				cout << "File " << ++file_index << " of " << files << ": " << root_path << endl;
+				cout << "File " << file_index << " of " << files << ": " << root_path << endl;
 				cout << "Identical Tracks in Event " << event_index - 1 << " of " << tree->GetEntries() << "  " << duplicate_count << " identical pairs" << endl;
+				out_file << root_path << "\t" << event_index - 1 << " event number\t" << tree->GetEntries() << " total events\t" << duplicate_count << " identical pairs" << endl;
 			}
 		}
 
 		f.Close();
 	}
+	paths_file.close();
+	out_file.close();
 }
 
 

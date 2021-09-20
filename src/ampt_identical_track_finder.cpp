@@ -23,7 +23,7 @@ using namespace std;
 
 
 void find_identical_tracks() {
-	string path_to_paths_file = "/home/dylan/Research/Ampt_Bad_Events/root_paths.txt";
+	string path_to_paths_file = "/home/dylan/Research/Ampt_Bad_Event/root_paths.txt";
 	string out_file_path = "/home/dylan/Research/Ampt_Bad_Events/bad_files.txt";
 	vector<int> ignore_pids{ 111, 313 };
 	double max_eta = 1.0;
@@ -42,12 +42,12 @@ void find_identical_tracks() {
 //	vector<string> file_paths = get_files_in_dir(in_path, "root", "path");
 
 	ifstream paths_file(path_to_paths_file);
-	string file_path;
+	string root_path;
 	int file_index = 0;
 
 	ofstream out_file(out_file_path);
 
-	while (getline(paths_file, file_path)) {
+	while (getline(paths_file, root_path)) {
 		cout << "File " << ++file_index << ": " << root_path << endl;
 		TFile f(root_path.data(), "READ");
 		TTree *tree = (TTree*)f.Get("tree");
@@ -78,11 +78,11 @@ void find_identical_tracks() {
 //					 cout << endl;
 				}
 			}
-			if (duplicate_count > 0) {
-				cout << "File " << file_index << " of " << files << ": " << root_path << endl;
-				cout << "Identical Tracks in Event " << event_index - 1 << " of " << tree->GetEntries() << "  " << duplicate_count << " identical pairs" << endl;
-				out_file << root_path << "\t" << event_index - 1 << " event number\t" << tree->GetEntries() << " total events\t" << duplicate_count << " identical pairs" << endl;
-			}
+//			if (duplicate_count > 0) {
+//				cout << "File " << file_index << ": " << root_path << endl;
+//				cout << "Identical Tracks in Event " << event_index - 1 << " of " << tree->GetEntries() << "  " << duplicate_count << " identical pairs" << endl;
+//				out_file << root_path << "\t" << event_index - 1 << " event number\t" << tree->GetEntries() << " total events\t" << duplicate_count << " identical pairs" << endl;
+//			}
 		}
 
 		f.Close();

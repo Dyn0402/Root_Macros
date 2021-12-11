@@ -193,10 +193,7 @@
 			<resource resourceType="PROJECT" workspacePath="/HelloRoot"/>
 		</configuration>
 		<configuration configurationName="Release">
-			<resource resourceType="PROJECT" workspacePath="/Ratio_Analysis"/>
-			<resource resourceType="PROJECT" workspacePath="/HelloRoot"/>
-			<resource resourceType="FOLDER" workspacePath="/Ratio_Analysis/Debug"/>
-			<resource resourceType="FOLDER" workspacePath="/Ratio_Analysis/Release"/>
+			<resource resourceType="PROJECT" workspacePath="/Root_Macros"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>

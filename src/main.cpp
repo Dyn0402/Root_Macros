@@ -18,7 +18,9 @@ using namespace std;
 int main() {
 //	find_identical_tracks();
 //	ubuntu_thread_test();
-	resample_alg_test();
+	resamp_alg_speed();
+//	resamp_alg_comp();
+//	resamp_alg_rndm_comp();
 	cout << "donzo" << endl;
 	return 0;
 }

@@ -11,7 +11,9 @@
 
 #include "ratio_methods.h"
 
-void resample_alg_test();
+void resamp_alg_speed();
+void resamp_alg_comp();
+void resamp_alg_rndm_comp();
 double get_mean(vector<double> vals);
 double get_sd(vector<double> vals);
 

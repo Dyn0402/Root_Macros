@@ -18,7 +18,7 @@
 using namespace std;
 
 
-void resample_alg_test() {
+void resamp_alg_speed() {
 	TRandom3 *trand = new TRandom3(0);
 
 	double bin_width = 120.0 / 180.0 * M_PI;
@@ -26,9 +26,8 @@ void resample_alg_test() {
 //	int samples = 1;
 	vector<int> samples {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	for (int i=15; i<=720; i+=5) { samples.push_back(i); }
-	int n_tracks = 30;
+	int n_tracks = 10;
 	int n_events = 10000;
-//	vector<double> angles {0.5, 0.06, 0.8};
 
 	for (int sample : samples) {
 		vector<double> elaps;
@@ -40,7 +39,7 @@ void resample_alg_test() {
 					angles.push_back(trand->Rndm() * 2 * M_PI);
 				}
 				sort(angles.begin(), angles.end());
-				get_resamples2(angles, bin_width, sample);
+				get_resamples3(angles, bin_width, sample);
 			}
 			chrono::duration<double> elap = chrono::system_clock::now() - start_run;
 
@@ -51,6 +50,58 @@ void resample_alg_test() {
 		cout << sample << " " << get_mean(elaps) << " " << get_sd(elaps) << " s" << endl;
 	}
 
+}
+
+
+void resamp_alg_comp() {
+	double bin_width = 120.0 / 180.0 * M_PI;
+	int samples = 5;
+	vector<double> angles {0.5, 0.06, 0.8};
+
+	cout << "get_resamples" << endl;
+	for (pair<int, int> hist : get_resamples(angles, bin_width, samples)) {
+		cout << hist.first << ": " << hist.second << endl;
+	}
+
+	cout << endl << "get_resamples2" << endl;
+	for (int hist : get_resamples2(angles, bin_width, samples)) {
+		cout << hist << endl;
+	}
+
+	cout << endl << "get_resamples3" << endl;
+	for (int hist : get_resamples3(angles, bin_width, samples)) {
+		cout << hist << endl;
+	}
+}
+
+
+void resamp_alg_rndm_comp() {
+	TRandom3 *trand = new TRandom3(0);
+	int tests = 1000000;
+	int max_particle = 100;
+	int max_samples = 1000;
+
+	for (int test_i=0; test_i < tests; test_i++) {
+		int samples = ceil(trand->Rndm() * max_samples);
+		double bin_width = trand->Rndm() * 2 * M_PI;
+		vector<double> angles;
+		for (int track_i=0; track_i < ceil(trand->Rndm() * max_particle); track_i++) {
+			angles.push_back(trand->Rndm() * 2 * M_PI);
+		}
+//		cout << "test " << test_i << ":" << endl;
+//		for (double angle : angles) { cout << angle << " " << flush; }
+//		cout << endl;
+		map<int, int> alg1 = get_resamples(angles, bin_width, samples);
+		vector<int> alg2 = get_resamples2(angles, bin_width, samples);
+		vector<int> alg3 = get_resamples3(angles, bin_width, samples);
+
+		for (unsigned index=0; index < alg2.size(); index++) {
+			if (alg1[index] != alg2[index] || alg1[index] != alg3[index] || alg2[index] != alg3[index]) {
+				cout << "test " << test_i << ":" << endl;
+				cout << alg1[index] << "  " << alg2[index] << "  " << alg3[index] << endl;
+			}
+		}
+	}
 }
 
 

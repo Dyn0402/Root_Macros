@@ -55,8 +55,8 @@ void resamp_alg_speed() {
 
 void resamp_alg_comp() {
 	double bin_width = 120.0 / 180.0 * M_PI;
-	int samples = 5;
-	vector<double> angles {0.5, 0.06, 0.8};
+	int samples = 3;
+	vector<double> angles {0.5, 1.5};
 
 	cout << "get_resamples3" << endl;
 	for (pair<int, int> hist : get_resamples3(angles, bin_width, samples)) {

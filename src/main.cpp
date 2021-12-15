@@ -21,9 +21,9 @@ int main() {
 //	find_identical_tracks();
 //	ubuntu_thread_test();
 //	resamp_alg_speed();
-//	resamp_alg_comp();
+	resamp_alg_comp();
 //	resamp_alg_rndm_comp();
-	pois_speed_test();
+//	pois_speed_test();
 	cout << "donzo" << endl;
 	return 0;
 }

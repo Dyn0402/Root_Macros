@@ -58,6 +58,17 @@ void resamp_alg_comp() {
 	int samples = 3;
 	vector<double> angles {0.5, 1.5};
 
+	double dphi = 2 * M_PI / samples;
+	vector<double> bin_lows;
+	for (int i = 0; i < samples; i++) {
+		bin_lows.push_back(i * dphi);
+	}
+
+	cout << "get_resamples4_test" << endl;
+	for (pair<int, int> hist : get_resamples4_test(angles, bin_width, samples, bin_lows)) {
+		cout << hist.first << ": " << hist.second << endl;
+	}
+
 	cout << "get_resamples3" << endl;
 	for (pair<int, int> hist : get_resamples3(angles, bin_width, samples)) {
 		cout << hist.first << ": " << hist.second << endl;

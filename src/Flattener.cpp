@@ -77,6 +77,7 @@ void Flattener::draw_phi_term(string particle_type, int cent_bin, int eta_bin, i
 
 // Initialize outfile and sin/cos_terms for getting phi coefficients
 void Flattener::init_phi_flattener() {
+	if (phi_file && phi_file->IsOpen()) { phi_file->Close(); }
 	phi_file = new TFile(phi_file_name.data(), "UPDATE");
 	init_phi_terms();
 }
@@ -84,6 +85,8 @@ void Flattener::init_phi_flattener() {
 
 // Initialize input phi coefficient file and output event plane coefficient file
 void Flattener::init_ep_flattener() {
+	if (phi_file && phi_file->IsOpen()) { phi_file->Close(); }
+	if (ep_file && ep_file->IsOpen()) { ep_file->Close(); }
 	phi_file = new TFile(phi_file_name.data(), "READ");
 	ep_file = new TFile(ep_file_name.data(), "UPDATE");
 	init_phi_terms();

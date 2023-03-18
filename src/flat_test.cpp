@@ -54,6 +54,7 @@ void flat_test() {
 	for (double sample : rand_samples_ep) {
 		ep_flattened->Fill(flat.get_flat_ep(sample, "west", 8, 11148000));
 	}
+	flat.write_ep();
 
 	TFile* out_file = new TFile("C:/Users/Dylan/Desktop/flat_tests/test_out.root", "RECREATE");
 	phi_test_hist->Write();

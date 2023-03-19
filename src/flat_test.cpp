@@ -4,13 +4,20 @@
 
 
 void flat_test() {
-	TFile *in_file = new TFile("C:/Users/Dylan/Desktop/flat_tests/11GeV_qa.root", "READ");
+	int energy = 62;
+	int cent = 8;
+	int eta_bin = 0;
+	int runkey = 11112;
+	string east_west = "west";
+	TFile *in_file = new TFile("C:/Users/Dylan/Desktop/flat_tests/" + to_string(energy) + "GeV_qa.root", "READ");
 
-	TH1I* phi_test_hist_in = (TH1I*)in_file->Get("original_phi_non-protons_cent_5_eta_bin_0_runkey_11148");
+	string orig_phi_name = "original_phi_non-protons_cent_" + to_string(cent) + "_eta_bin_" + to_string(eta_bin) + "_runkey_" + to_string(runkey);
+	TH1I* phi_test_hist_in = (TH1I*)in_file->Get(orig_phi_name);
 	TH1I* phi_test_hist = (TH1I*)phi_test_hist_in->Clone();
 	phi_test_hist->SetDirectory(0);
 
-	TH1I* ep_test_hist_in = (TH1I*)in_file->Get("original_psi_east_cent_5_runkey_11148");
+	string orig_psi_name = "original_psi_" + east_west + "cent_" + to_string(cent) + "_runkey_" + to_string(runkey);
+	TH1I* ep_test_hist_in = (TH1I*)in_file->Get(orig_psi_name);
 	TH1I* ep_test_hist = (TH1I*)ep_test_hist_in->Clone();
 	ep_test_hist->SetDirectory(0);
 
@@ -32,7 +39,7 @@ void flat_test() {
 	for (int i = 0; i < samples; i++) {
 		float rand_phi = phi_test_hist->GetRandom();
 		phi_sample_dist->Fill(rand_phi);
-		flat.calc_phi_terms("protons", 8, 0, 11148000, rand_phi);
+		flat.calc_phi_terms("non-protons", cent, eta_bin, runkey * 1000, rand_phi);
 		rand_samples_phi.push_back(rand_phi);
 	}
 	flat.write_phi();
@@ -40,19 +47,19 @@ void flat_test() {
 	flat.init_ep_flattener();
 
 	for (double sample : rand_samples_phi) {
-		phi_flattened->Fill(flat.get_flat_phi(sample, "protons", 8, 0, 11148000));
+		phi_flattened->Fill(flat.get_flat_phi(sample, "non-protons", cent, eta_bin, runkey * 1000));
 	}
 
 	vector<double> rand_samples_ep;
 	for (int i = 0; i < samples; i++) {
 		float rand_psi = ep_test_hist->GetRandom();
 		ep_sample_dist->Fill(rand_psi);
-		flat.calc_ep_terms("west", 8, 11148000, rand_psi);
+		flat.calc_ep_terms(east_west, cent, runkey * 1000, rand_psi);
 		rand_samples_ep.push_back(rand_psi);
 	}
 
 	for (double sample : rand_samples_ep) {
-		ep_flattened->Fill(flat.get_flat_ep(sample, "west", 8, 11148000));
+		ep_flattened->Fill(flat.get_flat_ep(sample, east_west, cent, runkey * 1000));
 	}
 	flat.write_ep();
 

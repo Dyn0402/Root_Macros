@@ -4,20 +4,25 @@
 
 
 void flat_test() {
-	int energy = 62;
+	int energy = 39;
 	int cent = 8;
 	int eta_bin = 0;
 	int runkey = 11112;
 	string east_west = "west";
-	TFile *in_file = new TFile("C:/Users/Dylan/Desktop/flat_tests/" + to_string(energy) + "GeV_qa.root", "READ");
+	string file_name = "C:/Users/Dylan/Desktop/flat_tests/" + to_string(energy) + "GeV_qa.root";
+	TFile *in_file = new TFile(file_name.data(), "READ");
 
 	string orig_phi_name = "original_phi_non-protons_cent_" + to_string(cent) + "_eta_bin_" + to_string(eta_bin) + "_runkey_" + to_string(runkey);
-	TH1I* phi_test_hist_in = (TH1I*)in_file->Get(orig_phi_name);
+	cout << orig_phi_name << endl;
+	TH1I* phi_test_hist_in = (TH1I*)in_file->Get(orig_phi_name.data());
+	cout << phi_test_hist_in << endl;
 	TH1I* phi_test_hist = (TH1I*)phi_test_hist_in->Clone();
 	phi_test_hist->SetDirectory(0);
 
-	string orig_psi_name = "original_psi_" + east_west + "cent_" + to_string(cent) + "_runkey_" + to_string(runkey);
-	TH1I* ep_test_hist_in = (TH1I*)in_file->Get(orig_psi_name);
+	string orig_psi_name = "original_psi_" + east_west + "_cent_" + to_string(cent) + "_runkey_" + to_string(runkey);
+	cout << orig_psi_name << endl;
+	TH1I* ep_test_hist_in = (TH1I*)in_file->Get(orig_psi_name.data());
+	cout << ep_test_hist_in << endl;
 	TH1I* ep_test_hist = (TH1I*)ep_test_hist_in->Clone();
 	ep_test_hist->SetDirectory(0);
 
@@ -29,10 +34,14 @@ void flat_test() {
 
 	TH1D* ep_sample_dist = new TH1D("Ep_Sample_Hist", "Samples from EP Distribution", 200, 0, M_PI);
 	TH1D* ep_flattened = new TH1D("EP_Flattened", "Flattened EP Distribution", 200, 0, M_PI);
+	TH1D* ep_read_coef_flattened = new TH1D("EP_Read_Coef_Flattened", "Flattened EP Distribution From Read In Ep Coefficients", 200, 0, M_PI);
 
 
 	Flattener flat("C:/Users/Dylan/Desktop/flat_tests/phi_coefs_test.root", "C:/Users/Dylan/Desktop/flat_tests/ep_coefs_test.root");
 	flat.init_phi_flattener();
+	Flattener flat_in("C:/Users/Dylan/Desktop/flat_tests/phi_coefs_39GeV.root", "C:/Users/Dylan/Desktop/flat_tests/ep_coefs_39GeV.root");
+	flat_in.init_treemaker();
+
 
 	vector<double> rand_samples_phi;
 	int samples = 1000000;
@@ -60,6 +69,7 @@ void flat_test() {
 
 	for (double sample : rand_samples_ep) {
 		ep_flattened->Fill(flat.get_flat_ep(sample, east_west, cent, runkey * 1000));
+		ep_read_coef_flattened->Fill();
 	}
 	flat.write_ep();
 

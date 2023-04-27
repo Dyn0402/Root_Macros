@@ -24,8 +24,9 @@ int main() {
 	//resamp_alg_speed();
 //	resamp_alg_comp();
 //	resamp_alg_rndm_comp();
-//	pois_speed_test();
-	flat_test();
+	pois_speed_test();
+	pois_dist_test();
+	//flat_test();
 	cout << "donzo" << endl;
 	return 0;
 }

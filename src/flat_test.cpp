@@ -69,7 +69,7 @@ void flat_test() {
 
 	for (double sample : rand_samples_ep) {
 		ep_flattened->Fill(flat.get_flat_ep(sample, east_west, cent, runkey * 1000));
-		ep_read_coef_flattened->Fill();
+		//ep_read_coef_flattened->Fill();  // Don't know what this was
 	}
 	flat.write_ep();
 

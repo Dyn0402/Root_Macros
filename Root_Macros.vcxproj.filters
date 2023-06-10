@@ -36,6 +36,9 @@
     <ClCompile Include="src\flat_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\mixer_bad_event_alg_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ampt_identical_track_finder.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Flattener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mixer_bad_event_alg_test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -134,6 +134,7 @@
     <ClCompile Include="src\Flattener.cpp" />
     <ClCompile Include="src\flat_test.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\mixer_bad_event_alg_test.cpp" />
     <ClCompile Include="src\rand_pois_speed.cpp" />
     <ClCompile Include="src\resample_alg_test.cpp" />
     <ClCompile Include="src\ubuntu_thread_test.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="flat_test.h" />
     <ClInclude Include="src\ampt_identical_track_finder.h" />
     <ClInclude Include="src\Flattener.h" />
+    <ClInclude Include="src\mixer_bad_event_alg_test.h" />
     <ClInclude Include="src\rand_pois_speed.h" />
     <ClInclude Include="src\resample_alg_test.h" />
     <ClInclude Include="src\ubuntu_thread_test.h" />
